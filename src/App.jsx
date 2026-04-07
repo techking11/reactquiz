@@ -10,6 +10,7 @@ const initialState = {
   questions: [],
   index: 0,
   status: "loading", // loading, error, ready, active, finished
+  score: 0,
 };
 
 const reducer = (state, action) => {
@@ -30,13 +31,23 @@ const reducer = (state, action) => {
         ...state,
         status: "active",
       };
+    case "nextQuestion":
+      return {
+        ...state,
+        index: state.index + 1,
+      };
+    case "totalScore":
+      return {
+        ...state,
+        score: state.score + action.payload,
+      };
     default:
       throw new Error("Unknown action type");
   }
 };
 
 export default function App() {
-  const [{ questions, status, index }, dispatch] = useReducer(
+  const [{ questions, status, index, score }, dispatch] = useReducer(
     reducer,
     initialState,
   );
@@ -53,6 +64,10 @@ export default function App() {
       });
   }, []);
 
+  const totalPoints = questions
+    .map((question) => question.points)
+    .reduce((a, b) => a + b, 0);
+
   return (
     <div className="app">
       <Header />
@@ -62,7 +77,16 @@ export default function App() {
         {status === "ready" && (
           <StartScreen numOfQuestions={numOfQuestions} dispatch={dispatch} />
         )}
-        {status === "active" && <Question question={questions[index]} />}
+        {status === "active" && (
+          <Question
+            question={questions[index]}
+            dispatch={dispatch}
+            numOfQuestions={numOfQuestions}
+            index={index}
+            numofPoints={score}
+            totalPoints={totalPoints}
+          />
+        )}
       </Main>
     </div>
   );

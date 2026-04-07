@@ -271,3 +271,12 @@ progress {
   font-size: inherit;
   padding: 0.8rem;
 }
+
+/* my custom code */
+.indicator {
+  width: 100%;
+  margin-bottom: 10px;
+  accent-color: "#848a85";
+  border-radius: "none";
+  border: "none";
+}
