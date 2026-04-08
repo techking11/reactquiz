@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { useEffect, useReducer } from "react";
 import Error from "./components/Error";
 import Header from "./components/Header";
@@ -33,7 +34,15 @@ const reducer = (state, action) => {
         status: "active",
       };
     case "newAnswer":
-      return { ...state, answer: action.payload };
+      const question = state.questions.at(state.index);
+      return {
+        ...state,
+        answer: action.payload,
+        points:
+          action.payload === question.correctOption
+            ? state.points + question.points
+            : state.points,
+      };
     default:
       throw new Error("Unknown action type");
   }

@@ -6,8 +6,8 @@ function Option({ question, answer, dispatch }) {
       {question.options.map((option, index) => (
         <button
           key={index}
-          className={`btn btn-option ${answer === option ? "answer" : ""} ${hasAnswer ? (index === question.correctOption ? "correct" : "wrong") : ""}`}
-          onClick={() => dispatch({ type: "newAnswer", payload: option })}
+          className={`btn btn-option ${index === answer ? "answer" : ""} ${hasAnswer ? (index === question.correctOption ? "correct" : "wrong") : ""}`}
+          onClick={() => dispatch({ type: "newAnswer", payload: index })}
           disabled={hasAnswer}
         >
           {option}
