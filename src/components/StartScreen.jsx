@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const StartScreen = ({ numOfQuestions, dispatch }) => {
+function StartScreen({ numOfQuestions, dispatch }) {
   return (
     <div className="start">
       <h2>Welcome to the React Quiz!</h2>
@@ -12,6 +12,6 @@ const StartScreen = ({ numOfQuestions, dispatch }) => {
       </button>
     </div>
   );
-};
+}
 
 export default StartScreen;

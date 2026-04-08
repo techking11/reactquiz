@@ -10,7 +10,8 @@ const initialState = {
   questions: [],
   index: 0,
   status: "loading", // loading, error, ready, active, finished
-  score: 0,
+  answer: null,
+  points: 0,
 };
 
 const reducer = (state, action) => {
@@ -31,27 +32,16 @@ const reducer = (state, action) => {
         ...state,
         status: "active",
       };
-    case "nextQuestion":
-      return {
-        ...state,
-        index: state.index + 1,
-      };
-    case "totalScore":
-      return {
-        ...state,
-        score: state.score + action.payload,
-      };
+    case "newAnswer":
+      return { ...state, answer: action.payload };
     default:
       throw new Error("Unknown action type");
   }
 };
 
 export default function App() {
-  const [{ questions, status, index, score }, dispatch] = useReducer(
-    reducer,
-    initialState,
-  );
-  const numOfQuestions = questions.length;
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { questions, index, status, answer } = state;
 
   useEffect(() => {
     fetch("http://localhost:9000/questions")
@@ -64,9 +54,7 @@ export default function App() {
       });
   }, []);
 
-  const totalPoints = questions
-    .map((question) => question.points)
-    .reduce((a, b) => a + b, 0);
+  const numOfQuestions = questions.length;
 
   return (
     <div className="app">
@@ -80,11 +68,8 @@ export default function App() {
         {status === "active" && (
           <Question
             question={questions[index]}
+            answer={answer}
             dispatch={dispatch}
-            numOfQuestions={numOfQuestions}
-            index={index}
-            numofPoints={score}
-            totalPoints={totalPoints}
           />
         )}
       </Main>
