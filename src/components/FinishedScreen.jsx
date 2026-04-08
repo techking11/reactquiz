@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-function FinishedScreen({ maxPossiblePoints, points, highscore }) {
+function FinishedScreen(props) {
+  const { maxPossiblePoints, points, highscore, dispatch } = props;
   const percentage = (points / maxPossiblePoints) * 100;
 
   let emoji;
@@ -17,6 +18,13 @@ function FinishedScreen({ maxPossiblePoints, points, highscore }) {
       </p>
 
       <p className="highscore">(Highscore: {highscore} points)</p>
+
+      <button
+        className="btn btn-ui"
+        onClick={() => dispatch({ type: "Restart" })}
+      >
+        Restart Quiz
+      </button>
     </>
   );
 }
