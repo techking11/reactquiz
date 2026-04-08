@@ -1,14 +1,27 @@
 /* eslint-disable react/prop-types */
-function NextButton({ dispatch, answer }) {
+function NextButton(props) {
+  const { dispatch, answer, numOfQuestions, index } = props;
   if (answer === null) return null;
-  return (
-    <button
-      className="btn btn-ui"
-      onClick={() => dispatch({ type: "nextQuestion" })}
-    >
-      Next
-    </button>
-  );
+
+  if (index < numOfQuestions - 1) {
+    return (
+      <button
+        className="btn btn-ui"
+        onClick={() => dispatch({ type: "nextQuestion" })}
+      >
+        Next
+      </button>
+    );
+  } else {
+    return (
+      <button
+        className="btn btn-ui"
+        onClick={() => dispatch({ type: "finish" })}
+      >
+        Finish
+      </button>
+    );
+  }
 }
 
 export default NextButton;

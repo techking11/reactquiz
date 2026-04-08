@@ -8,6 +8,7 @@ import StartScreen from "./components/StartScreen";
 import Loader from "./components/Loader";
 import NextButton from "./components/NextButton";
 import Progress from "./components/Progress";
+import FinishedScreen from "./components/FinishedScreen";
 
 const initialState = {
   questions: [],
@@ -15,6 +16,7 @@ const initialState = {
   status: "loading", // loading, error, ready, active, finished
   answer: null,
   points: 0,
+  highscore: 0,
 };
 
 const reducer = (state, action) => {
@@ -47,6 +49,13 @@ const reducer = (state, action) => {
       };
     case "nextQuestion":
       return { ...state, index: state.index + 1, answer: null };
+    case "finish":
+      return {
+        ...state,
+        status: "finished",
+        highscore:
+          state.points > state.highscore ? state.points : state.highscore,
+      };
     default:
       throw new Error("Unknown action type");
   }
@@ -54,7 +63,7 @@ const reducer = (state, action) => {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { questions, index, status, answer, points } = state;
+  const { questions, index, status, answer, points, highscore } = state;
 
   useEffect(() => {
     fetch("http://localhost:9000/questions")
@@ -96,8 +105,20 @@ export default function App() {
               answer={answer}
               dispatch={dispatch}
             />
-            <NextButton dispatch={dispatch} answer={answer} />
+            <NextButton
+              dispatch={dispatch}
+              answer={answer}
+              numOfQuestions={numOfQuestions}
+              index={index}
+            />
           </>
+        )}
+        {status === "finished" && (
+          <FinishedScreen
+            points={points}
+            maxPossiblePoints={maxPossiblePoints}
+            highscore={highscore}
+          />
         )}
       </Main>
     </div>
